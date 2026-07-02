@@ -1,6 +1,6 @@
 ---
 name: code-review-gate
-version: 0.2.0
+version: 0.2.1
 summary: 自动对 git diff 执行 7 维度结构化代码审查，输出分级报告并阻塞 Critical 问题
 description: |
   AI 代码审查门禁 — 对 git diff 执行全面的静态分析，覆盖功能正确性、安全性、
@@ -21,6 +21,17 @@ repository: https://github.com/Terr123123/code-review-gate
 runtime: python
 requires_python: ">=3.10"
 requires_git: ">=2.0"
+permissions:
+  read:
+    - git_diff       # 读取 git diff 内容
+    - filesystem     # 读取设计文档（--design 参数）
+    - subprocess     # 调用 git diff 命令
+  write: []          # 不执行任何写操作
+  network: []        # 无网络请求
+security_notes: |
+  本技能仅执行本地静态分析，不修改任何文件。
+  使用 subprocess.run 仅调用 git diff（只读命令），不接受外部输入。
+  所有正则匹配在本地内存中执行，不发送任何数据到外部服务。
 ---
 
 # Code Review Gate — AI 代码审查门禁 Skill
